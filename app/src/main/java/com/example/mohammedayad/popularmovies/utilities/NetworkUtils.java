@@ -12,7 +12,7 @@ import java.net.URL;
 
 public final class NetworkUtils {
     public static final String popularMoviesUrl="http://api.themoviedb.org/3/movie/popular";
-    public static final String topRatedMoviesUrl="http://api.themoviedb.org/3//movie/top_rated";
+    public static final String topRatedMoviesUrl="http://api.themoviedb.org/3/movie/top_rated";
     public static final String QUERY_PARAM="api_key";
     public static final String moviesApiKey="";
 
@@ -28,7 +28,7 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-//        Log.v(TAG, "Built URI " + url);
+        Log.v("++++++++++", "Built URI " + url);
 
         return url;
     }

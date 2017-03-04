@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -47,13 +49,14 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         mRecyclerView.setHasFixedSize(true);
         mPopularMoviesAdapter=new PopularMoviesAdapter(this,getApplicationContext());
         mRecyclerView.setAdapter(mPopularMoviesAdapter);
-        loadPopularMoviesData();
+//        default url to fetch the movies
+        loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
     }
 
-    private void loadPopularMoviesData() {
+    private void loadPopularMoviesData(String moviesOrderUrl) {
         showMoviesDataView();
         mLoadingIndicator.setVisibility(View.VISIBLE);
-        String moviesUrl=NetworkUtils.buildUrl(NetworkUtils.popularMoviesUrl).toString();
+        String moviesUrl=NetworkUtils.buildUrl(moviesOrderUrl).toString();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET,moviesUrl, null, new Response.Listener<JSONObject>(){
 
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                                 showMoviesDataView();
                                 mPopularMoviesAdapter.setPopularMoviesData(movies);
                             } else {
+                                Log.i("+++++++++++++++++++++","tere aren't any movies");
                                 showErrorMessage();
                             }
 //                            Toast.makeText(getApplicationContext(),organizationObject.toString(),Toast.LENGTH_LONG).show();
@@ -134,5 +138,27 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         intent.putExtra("movie", selectedMovie);
         startActivity(intent);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.movies_order_by,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int selectedMovieOrder=item.getItemId();
+        switch (selectedMovieOrder){
+            case R.id.mostPopular:
+                mPopularMoviesAdapter.setPopularMoviesData(null);
+                loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
+                return true;
+            case R.id.topRated:
+                mPopularMoviesAdapter.setPopularMoviesData(null);
+                loadPopularMoviesData(NetworkUtils.topRatedMoviesUrl);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
