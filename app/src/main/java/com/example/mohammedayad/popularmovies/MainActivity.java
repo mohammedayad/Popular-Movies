@@ -1,5 +1,6 @@
 package com.example.mohammedayad.popularmovies;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         LinearLayoutManager layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mPopularMoviesAdapter=new PopularMoviesAdapter(this);
+        mPopularMoviesAdapter=new PopularMoviesAdapter(this,getApplicationContext());
+        mRecyclerView.setAdapter(mPopularMoviesAdapter);
         loadPopularMoviesData();
     }
 
@@ -62,22 +64,24 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                             JSONArray results= response.getJSONArray("results");
                             movies=new ArrayList<>();
                             for(int i=0;i<results.length();i++){
+                                JSONObject movieObject=results.getJSONObject(i);
                                 Movie movie=new Movie();
-                                movie.setPosterPath(results.getString(0));
-                                movie.setAdult(Boolean.parseBoolean(results.getString(1)));
-                                movie.setOverview(results.getString(2));
-                                movie.setReleaseDate(results.getString(3));
-                                movie.setGenreIds(results.getString(4));
-                                movie.setId(results.getString(5));
-                                movie.setOriginalTitle(results.getString(6));
-                                movie.setOriginalLanguage(results.getString(7));
-                                movie.setTitle(results.getString(8));
-                                movie.setBackdropPath(results.getString(9));
-                                movie.setPopularity(results.getString(10));
-                                movie.setVoteCount(results.getString(11));
-                                movie.setVideo(Boolean.parseBoolean(results.getString(12)));
-                                movie.setVoteAverage(results.getString(13));
+                                movie.setPosterPath(movieObject.getString("poster_path"));
+                                movie.setAdult(Boolean.parseBoolean(movieObject.getString("adult")));
+                                movie.setOverview(movieObject.getString("overview"));
+                                movie.setReleaseDate(movieObject.getString("release_date"));
+                                movie.setGenreIds(movieObject.getString("genre_ids"));
+                                movie.setId(movieObject.getString("id"));
+                                movie.setOriginalTitle(movieObject.getString("original_title"));
+                                movie.setOriginalLanguage(movieObject.getString("original_language"));
+                                movie.setTitle(movieObject.getString("title"));
+                                movie.setBackdropPath(movieObject.getString("backdrop_path"));
+                                movie.setPopularity(movieObject.getString("popularity"));
+                                movie.setVoteCount(movieObject.getString("vote_count"));
+                                movie.setVideo(Boolean.parseBoolean(movieObject.getString("video")));
+                                movie.setVoteAverage(movieObject.getString("vote_average"));
                                 movies.add(movie);
+                                Log.i("+++++++++++++++++++++", movies.get(i).getPosterPath());
                             }
 
                             Log.i("+++++++++++++++++++++", movies.get(0).getPosterPath());
@@ -126,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
 
     @Override
     public void onClick(Movie selectedMovie) {
+        Intent intent=new Intent(this,MovieDetails.class);
+        intent.putExtra("movie", selectedMovie);
+        startActivity(intent);
 
     }
 }

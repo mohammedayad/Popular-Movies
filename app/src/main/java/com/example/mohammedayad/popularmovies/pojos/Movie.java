@@ -1,10 +1,13 @@
 package com.example.mohammedayad.popularmovies.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mohammed.ayad on 2/28/2017.
  */
 
-public class Movie {
+public class Movie implements Parcelable{
     private String posterPath;
     private boolean isAdult;
     private String overview;
@@ -152,4 +155,50 @@ public class Movie {
     public void setVoteAverage(String voteAverage) {
         this.voteAverage = voteAverage;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{posterPath,overview,releaseDate,genreIds,id,originalTitle,originalLanguage,title,backdropPath,popularity,voteCount,voteAverage});
+        dest.writeBooleanArray(new boolean[]{isAdult,isVideo});
+
+    }
+    public Movie(Parcel in) {
+        String[] stringData = new String[12];
+        in.readStringArray(stringData);
+        this.posterPath = stringData[0];
+        this.overview = stringData[1];
+        this.releaseDate = stringData[2];
+        this.genreIds = stringData[3];
+        this.id = stringData[4];
+        this.originalTitle = stringData[5];
+        this.originalLanguage = stringData[6];
+        this.title = stringData[7];
+        this.backdropPath = stringData[8];
+        this.popularity = stringData[9];
+        this.voteCount = stringData[10];
+        this.voteAverage = stringData[11];
+
+
+        boolean[] booleanData=new boolean[2];
+        this.isAdult = booleanData[0];
+        this.isVideo = booleanData[1];
+
+    }
+
+    public static final Parcelable.Creator CREATOR =new Creator() {
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
