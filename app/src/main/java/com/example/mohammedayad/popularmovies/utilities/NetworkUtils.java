@@ -34,7 +34,7 @@ public final class NetworkUtils {
     }
     public static String buildPosterUrl(String imageName){
         Uri.Builder builder=new Uri.Builder();
-        builder.scheme("http").path("image.tmdb.org/t/p/w500//"+imageName);
+        builder.scheme("http").path("//image.tmdb.org/t/p/w185//"+imageName);
         Uri posterAddress= builder.build();
         Log.i("+++++++++++++++++++++", posterAddress.toString());
         return posterAddress.toString();

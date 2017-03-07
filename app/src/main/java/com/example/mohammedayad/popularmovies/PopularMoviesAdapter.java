@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.example.mohammedayad.popularmovies.pojos.Movie;
 import com.example.mohammedayad.popularmovies.utilities.NetworkUtils;
+import com.example.mohammedayad.popularmovies.volley.MySingleton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

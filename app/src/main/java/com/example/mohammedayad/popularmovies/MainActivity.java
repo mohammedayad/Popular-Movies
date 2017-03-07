@@ -1,10 +1,13 @@
 package com.example.mohammedayad.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         mRecyclerView.setHasFixedSize(true);
         mPopularMoviesAdapter=new PopularMoviesAdapter(this,getApplicationContext());
         mRecyclerView.setAdapter(mPopularMoviesAdapter);
+        String den=getDeviceResolution();
+        Toast.makeText(this, "density "+den, Toast.LENGTH_LONG).show();
+        determineScreenSize();
 //        default url to fetch the movies
         loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
     }
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                                 showMoviesDataView();
                                 mPopularMoviesAdapter.setPopularMoviesData(movies);
                             } else {
-                                Log.i("+++++++++++++++++++++","tere aren't any movies");
+                                Log.i("+++++++++++++++++++++","no movies here");
                                 showErrorMessage();
                             }
 //                            Toast.makeText(getApplicationContext(),organizationObject.toString(),Toast.LENGTH_LONG).show();
@@ -128,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
     private void showErrorMessage() {
         /* First, hide the currently visible data */
         mRecyclerView.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
@@ -160,5 +168,46 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void determineScreenSize(){
+        //Determine screen size
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            Toast.makeText(this, "Large screen", Toast.LENGTH_LONG).show();
+        }
+        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL) {
+            Toast.makeText(this, "Normal sized screen", Toast.LENGTH_LONG).show();
+        }
+        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {
+            Toast.makeText(this, "Small sized screen", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this, "Screen size is neither large, normal or small", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+    private String getDeviceResolution()
+    {
+        int density = getResources().getDisplayMetrics().densityDpi;
+        switch (density)
+        {
+            case DisplayMetrics.DENSITY_MEDIUM:
+                return "MDPI";
+            case DisplayMetrics.DENSITY_HIGH:
+                return "HDPI";
+            case DisplayMetrics.DENSITY_LOW:
+                return "LDPI";
+            case DisplayMetrics.DENSITY_XHIGH:
+                return "XHDPI";
+            case DisplayMetrics.DENSITY_TV:
+                return "TV";
+            case DisplayMetrics.DENSITY_XXHIGH:
+                return "XXHDPI";
+            case DisplayMetrics.DENSITY_XXXHIGH:
+                return "XXXHDPI";
+            default:
+                return "Unknown";
+        }
     }
 }
