@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         mRecyclerView.setHasFixedSize(true);
         mPopularMoviesAdapter=new PopularMoviesAdapter(this,getApplicationContext());
         mRecyclerView.setAdapter(mPopularMoviesAdapter);
-        String den=getDeviceResolution();
-        Toast.makeText(this, "density "+den, Toast.LENGTH_LONG).show();
-        determineScreenSize();
+//        String den=getDeviceResolution();
+//        Toast.makeText(this, "density "+den, Toast.LENGTH_LONG).show();
+//        determineScreenSize();
 //        default url to fetch the movies
         loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
     }
