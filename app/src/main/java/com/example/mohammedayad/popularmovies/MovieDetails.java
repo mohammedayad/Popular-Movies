@@ -32,7 +32,7 @@ public class MovieDetails extends AppCompatActivity {
         movieTitle.setText(movie.getOriginalTitle());
         setMoviePoster();
         releaseDate.setText(movie.getReleaseDate());
-        voteAverage.setText(movie.getVoteAverage());
+        voteAverage.setText(movie.getVoteAverage()+"/10");
         movieOverview.setText(movie.getOverview());
     }
     public void setMoviePoster(){
