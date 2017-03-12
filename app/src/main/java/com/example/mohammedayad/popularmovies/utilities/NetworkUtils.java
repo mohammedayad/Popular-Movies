@@ -3,6 +3,8 @@ package com.example.mohammedayad.popularmovies.utilities;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.mohammedayad.popularmovies.BuildConfig;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 

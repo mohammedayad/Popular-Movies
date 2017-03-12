@@ -102,6 +102,8 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
         public void setMoviePoster(String moviePosterFullPath,Context context){
             Picasso.with(context)
                     .load(moviePosterFullPath)
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.ic_error)
                     .into(moviePoster);
 
         }
