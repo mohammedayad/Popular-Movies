@@ -75,22 +75,32 @@
                     android:layout_marginTop="10dp"
                     android:layout_gravity="center"
                     />
+
                 <TextView
+                    android:id="@+id/voteAverage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/voteAverage"
-                    android:text="@string/vote_average"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorLightGray"
-                    android:layout_marginTop="30dp"
                     android:layout_gravity="center"
-                    />
+                    android:layout_marginTop="30dp"
+                    android:text="@string/vote_average"
+                    android:textColor="@color/colorLightGray"
+                    android:textSize="20sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/movie_rate"
+                    android:id="@+id/movieRate"
+                    android:src="@drawable/default_star"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
+                    />
+                <Button
+                    android:id="@+id/showReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/show_reviews"
+                    android:layout_marginTop="24dp"
                     />
 
 
@@ -101,7 +111,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:orientation="vertical"
             >
             <TextView
                 android:layout_width="match_parent"
@@ -111,9 +121,76 @@
                 android:textColor="@color/colorLightGray"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="5dp"
-
-
                 />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trailers"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/colorLightGray"
+                android:textSize="25sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageButton
+                    android:id="@+id/playTrailerOne"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/play_trailer" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/play_trailer_one"
+                    android:textColor="@color/colorLightGray"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="2"
+                android:layout_marginLeft="24dp"
+                >
+                <ImageButton
+                    android:id="@+id/playTrailerTwo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/play_trailer"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/play_trailer_two"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorLightGray"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

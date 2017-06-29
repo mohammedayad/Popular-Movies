@@ -8,5 +8,14 @@
     <string name="vote_average">Vote Average</string>
     <string name="most_popular">Most Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="trailers">Trailers</string>
+    <string name="play_trailer_one">Trailer 1</string>
+    <string name="play_trailer_two">Trailer 2</string>
+    <string name="play_trailer_option">Play Trailer Options</string>
+    <string name="show_reviews">Show Reviews</string>
+    <string name="check_your_connection">Please check your Connection</string>
+    <string name="loading_trailer">Please Wait until Loading Trailer</string>
+    <string name="loading_reviews">No Reviews yet</string>
+    <string name="favorite_movies">Favorite Movies</string>
 </resources>
 

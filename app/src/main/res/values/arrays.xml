@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="play_trailer_options">
+        <item>Youtube</item>
+        <item>Web Browser</item>
+    </array>
+</resources>

@@ -22,6 +22,8 @@ public class Movie implements Parcelable{
     private String voteCount;
     private boolean isVideo;
     private String voteAverage;
+    private int isFavoriteMovie;
+    private String posterFullPath;
 
     public Movie() {
 
@@ -156,6 +158,22 @@ public class Movie implements Parcelable{
         this.voteAverage = voteAverage;
     }
 
+    public int getIsFavoriteMovie() {
+        return isFavoriteMovie;
+    }
+
+    public void setIsFavoriteMovie(int isFavoriteMovie) {
+        this.isFavoriteMovie = isFavoriteMovie;
+    }
+
+    public String getPosterFullPath() {
+        return posterFullPath;
+    }
+
+    public void setPosterFullPath(String posterFullPath) {
+        this.posterFullPath = posterFullPath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -163,12 +181,13 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{posterPath,overview,releaseDate,genreIds,id,originalTitle,originalLanguage,title,backdropPath,popularity,voteCount,voteAverage});
+        dest.writeStringArray(new String[]{posterPath,overview,releaseDate,genreIds,id,originalTitle,originalLanguage,title,backdropPath,popularity,voteCount,voteAverage,posterFullPath});
         dest.writeBooleanArray(new boolean[]{isAdult,isVideo});
+        dest.writeInt(isFavoriteMovie);
 
     }
     public Movie(Parcel in) {
-        String[] stringData = new String[12];
+        String[] stringData = new String[13];
         in.readStringArray(stringData);
         this.posterPath = stringData[0];
         this.overview = stringData[1];
@@ -182,12 +201,14 @@ public class Movie implements Parcelable{
         this.popularity = stringData[9];
         this.voteCount = stringData[10];
         this.voteAverage = stringData[11];
+        this.posterFullPath=stringData[12];
 
 
         boolean[] booleanData=new boolean[2];
+        in.readBooleanArray(booleanData);
         this.isAdult = booleanData[0];
         this.isVideo = booleanData[1];
-
+        this.isFavoriteMovie=in.readInt();
     }
 
     public static final Parcelable.Creator CREATOR =new Creator() {

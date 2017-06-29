@@ -1,21 +1,33 @@
 package com.example.mohammedayad.popularmovies;
 
+import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.example.mohammedayad.popularmovies.data.MovieContract;
 import com.example.mohammedayad.popularmovies.pojos.Movie;
+import com.example.mohammedayad.popularmovies.utilities.Commons;
 import com.example.mohammedayad.popularmovies.utilities.NetworkUtils;
 import com.example.mohammedayad.popularmovies.volley.MySingleton;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import com.example.mohammedayad.popularmovies.data.MovieContract.MovieEntry;
 
 /**
  * Created by mohammed.ayad on 2/28/2017.
@@ -61,9 +73,11 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     public void onBindViewHolder(PopularMoviesAdapterViewHolder holder, int position) {
         Log.i("+++++++++++++++++++++", "onBindViewHolder "+position);
         Movie movie =movies.get(position);
-        String posterPath=movie.getPosterPath();
-        String moviePosterFullPath=NetworkUtils.buildPosterUrl(posterPath);
-        holder.setMoviePoster(moviePosterFullPath,context);
+//        String posterPath=movie.getPosterPath();
+//        String moviePosterFullPath=NetworkUtils.buildPosterUrl(posterPath);
+//        holder.setMoviePoster(moviePosterFullPath,context);
+        Log.i("?????????", "fullMoviePath "+movie.getPosterFullPath());
+        holder.setMoviePoster(movie.getPosterFullPath(),context);
 
     }
 
