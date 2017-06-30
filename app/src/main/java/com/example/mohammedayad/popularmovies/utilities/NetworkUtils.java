@@ -19,7 +19,7 @@ public final class NetworkUtils {
     public static final String popularMoviesUrl=DOMAIN_URL+"popular";
     public static final String topRatedMoviesUrl=DOMAIN_URL+"top_rated";
     public static final String QUERY_PARAM="api_key";
-    public static final String moviesApiKey="a1799d5a26903b406f268fd4e32ea518";
+    public static final String moviesApiKey="";
     public static final String TAG="Popular Movies";
 
     public static URL buildUrl(String locationUrl) {
