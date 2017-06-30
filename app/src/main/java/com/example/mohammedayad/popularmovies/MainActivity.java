@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                                 int smallestWidth=getSmallestWidth();
                                 String moviePosterFullPath=null;
                                 if(smallestWidth>=800){//tablet
-                                    moviePosterFullPath = NetworkUtils.buildPosterUrl(movie.getPosterPath(), "w500");
+                                    moviePosterFullPath = NetworkUtils.buildPosterUrl(movie.getPosterPath(), "w780");
 
                                 }else {
-                                     moviePosterFullPath = NetworkUtils.buildPosterUrl(movie.getPosterPath(), "w185");
+                                     moviePosterFullPath = NetworkUtils.buildPosterUrl(movie.getPosterPath(), "w500");
                                 }
                                 movie.setPosterFullPath(moviePosterFullPath);
                                 movies.add(movie);

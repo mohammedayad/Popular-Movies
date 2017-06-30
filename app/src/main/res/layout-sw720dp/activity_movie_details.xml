@@ -30,11 +30,12 @@
 
     <ImageView
         android:id="@+id/fullMoviePoster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieTitle"
         app:srcCompat="@mipmap/ic_launcher" />
@@ -108,8 +109,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="223dp"
-        app:layout_constraintTop_toBottomOf="@+id/showReviews" />
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/fullMoviePoster" />
 
     <TextView
         android:id="@+id/trailers"
