@@ -3,9 +3,11 @@ package com.example.mohammedayad.popularmovies;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -16,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
     private int currentLoaderId=TASK_LOADER_MOVIES_ID;
     private int currentMovieCategory=1;//mostPopular
     private boolean isFirstLoad=true;
+    private boolean cacheMoviesFlag=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +83,28 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
 //        determineScreenSize();
 //        default url to fetch the movies
         Log.i("########", "onCreate");
-        if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
-//            loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
-            loadMoviesDataFromServer();
-        }else{
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            loadDataFromDataBase();
+        if (savedInstanceState!=null){
+            showMoviesDataView();
+            mPopularMoviesAdapter.setPopularMoviesData(savedInstanceState.<Movie>getParcelableArrayList("moviesContainer"));
 
+        }else {
+            if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
+//            loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
+                loadMoviesDataFromServer();
+            } else {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+                loadDataFromDataBase();
+
+            }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("moviesContainer",movies);
+
+
     }
 
     private void loadPopularMoviesData(String moviesOrderUrl) {
@@ -139,7 +157,9 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                                 mLoadingIndicator.setVisibility(View.INVISIBLE);
                                 if (movies != null) {
                                     Log.i("movies", movies.toString());
-                                    addNewMovieToDataBase(movies);
+                                    if (cacheMoviesFlag) {
+                                        addNewMovieToDataBase(movies);
+                                    }
                                     showMoviesDataView();
                                     mPopularMoviesAdapter.setPopularMoviesData(movies);
                                 } else {
@@ -190,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
 
     @Override
     public void onClick(Movie selectedMovie) {
-        Intent movieTrailers=new Intent(this, MovieTrailersIntentService.class);
+        Intent movieTrailers=new Intent(getApplicationContext(), MovieTrailersIntentService.class);
         movieTrailers.setAction(MovieDetails.ACTION_LOAD_MOVIES_TRAILERS);
         movieTrailers.putExtra("movieId",selectedMovie.getId());
         startService(movieTrailers);
@@ -211,11 +231,13 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         int selectedMovieOrder=item.getItemId();
         switch (selectedMovieOrder){
             case R.id.mostPopular:
+                this.cacheMoviesFlag=true;
                 this.currentMovieCategory=1;
                 mPopularMoviesAdapter.setPopularMoviesData(null);
                 loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
                 return true;
             case R.id.topRated:
+                this.cacheMoviesFlag=true;
                 this.currentMovieCategory=2;
                 mPopularMoviesAdapter.setPopularMoviesData(null);
                 loadPopularMoviesData(NetworkUtils.topRatedMoviesUrl);
@@ -483,6 +505,10 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
     protected void onPause() {
         super.onPause();
         Log.i("########", "onPause");
+//        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor=preferences.edit();
+//        editor.putInt("currentMovieCategory",currentMovieCategory);
+//        editor.apply();
     }
 
     @Override
@@ -506,10 +532,11 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i("+++++++++++++++++++++", "onRestart");
+        Log.i("########", "onRestart");
 //        if (!NetworkUtils.isNetworkConnected(getApplicationContext())) {
 //            getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
 //        }
+        this.cacheMoviesFlag=false;
         mPopularMoviesAdapter.setPopularMoviesData(movies);
 //        Log.i("#####", "currentLoaderId "+this.currentLoaderId);
 //        switch (this.currentLoaderId){
