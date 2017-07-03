@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -69,19 +70,15 @@ public class MovieDetails extends AppCompatActivity {
 //        movieOverview=(TextView)findViewById(R.id.overview);
         ButterKnife.bind(this);
         Bundle data = getIntent().getExtras();
-        movie = (Movie) data.getParcelable("movie");
+        if(savedInstanceState==null) {
+             movie = (Movie) data.getParcelable("movie");
 //        Intent movieTrailers=new Intent(this, MovieTrailersIntentService.class);
 //        movieTrailers.setAction(ACTION_LOAD_MOVIES_TRAILERS);
 //        movieTrailers.putExtra("movieId",movie.getId());
 //        startService(movieTrailers);
-        movieTitle.setText(movie.getOriginalTitle());
-        setMoviePoster();
-        releaseDate.setText(movie.getReleaseDate());
-        voteAverage.setText(movie.getVoteAverage()+"/10");
-        movieOverview.setText(movie.getOverview());
-        isFavoriteMovie=movie.getIsFavoriteMovie();
-        Log.d("?????","before click "+isFavoriteMovie);
-        markMovieAsFavorite();
+            setMovieDetails();
+        }
+
         movieRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,5 +235,59 @@ public class MovieDetails extends AppCompatActivity {
 //        dialog.setTitle("Reviews");
 //        dialog.getWindow().setLayout(900,700);
 //        dialog.show();
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("movie",movie);
+
+
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Movie savedMovie=savedInstanceState.<Movie>getParcelable("movie");
+        this.movie=savedMovie;
+        setMovieDetails();
+    }
+
+    private void setMovieDetails(){
+        movieTitle.setText(movie.getOriginalTitle());
+        setMoviePoster();
+        releaseDate.setText(movie.getReleaseDate());
+        voteAverage.setText(movie.getVoteAverage()+"/10");
+        movieOverview.setText(movie.getOverview());
+//        if (NetworkUtils.isNetworkConnected(getApplicationContext())){
+//            isFavoriteMovie=loadFavoriteMovieFlag();
+//            Log.d("######","internet");
+//        }else {
+//            isFavoriteMovie = movie.getIsFavoriteMovie();
+//            Log.d("######","cached");
+//
+//        }
+        loadFavoriteMovieFlag();
+        isFavoriteMovie = movie.getIsFavoriteMovie();
+        Log.d("######","before click "+isFavoriteMovie);
+        markMovieAsFavorite();
+
+
+    }
+
+    private void loadFavoriteMovieFlag(){
+        Uri selectedMovie=MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
+        int isFavoriteMovie=0;
+        Cursor returnedMovie=getContentResolver().query(selectedMovie,
+                null,
+                "movie_id=?",
+                null,
+                null);
+        if (returnedMovie.getCount() > 0) {
+            returnedMovie.moveToNext();
+             int isFavoriteMovieIndex = returnedMovie.getColumnIndex(MovieContract.MovieEntry.COLUMN_IS_FAVORITE);
+            isFavoriteMovie=returnedMovie.getInt(isFavoriteMovieIndex);
+        }
+        Log.d("######","loadFavoriteMovieFlag "+isFavoriteMovie);
+        movie.setIsFavoriteMovie(isFavoriteMovie);
+
     }
 }

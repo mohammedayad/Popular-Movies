@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
     private static final int TASK_LOADER_ID = 0;
     private static final int TASK_LOADER_FAVORITE_MOVIES_ID = 1;
     private static final int TASK_LOADER_MOVIES_ID = 2;
-    private int currentLoaderId=TASK_LOADER_MOVIES_ID;
-    private int currentMovieCategory=1;//mostPopular
-    private boolean isFirstLoad=true;
-    private boolean cacheMoviesFlag=true;
+    private int currentLoaderId = TASK_LOADER_MOVIES_ID;
+    private int currentMovieCategory = 1;//mostPopular
+    private boolean isFirstLoad = true;
+    private boolean cacheMoviesFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +76,14 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumns());
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mPopularMoviesAdapter=new PopularMoviesAdapter(this,getApplicationContext());
+        mPopularMoviesAdapter = new PopularMoviesAdapter(this, getApplicationContext());
         mRecyclerView.setAdapter(mPopularMoviesAdapter);
 //        String den=getDeviceResolution();
 //        Toast.makeText(this, "density "+den, Toast.LENGTH_LONG).show();
 //        determineScreenSize();
 //        default url to fetch the movies
         Log.i("########", "onCreate");
-        if (savedInstanceState!=null){
-            showMoviesDataView();
-            mPopularMoviesAdapter.setPopularMoviesData(savedInstanceState.<Movie>getParcelableArrayList("moviesContainer"));
-
-        }else {
+        if (savedInstanceState == null) {
             if (NetworkUtils.isNetworkConnected(getApplicationContext())) {
 //            loadPopularMoviesData(NetworkUtils.popularMoviesUrl);
                 loadMoviesDataFromServer();
@@ -96,8 +92,10 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
                 loadDataFromDataBase();
 
             }
-        }
+
     }
+
+}
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -105,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements PopularMoviesAdap
         outState.putParcelableArrayList("moviesContainer",movies);
 
 
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        showMoviesDataView();
+        mPopularMoviesAdapter.setPopularMoviesData(savedInstanceState.<Movie>getParcelableArrayList("moviesContainer"));
     }
 
     private void loadPopularMoviesData(String moviesOrderUrl) {

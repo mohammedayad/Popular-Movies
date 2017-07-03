@@ -68,18 +68,19 @@ public class MoviesContentProvider extends ContentProvider {
 
         // COMPLETED (2) Write URI matching code to identify the match for the tasks directory
         int match = sUriMatcher.match(uri);
-        Uri returnUri; // URI to be returned
+        Uri returnUri=null; // URI to be returned
 
         switch (match) {
             case MOVIES:
                 // COMPLETED (3) Insert new values into the database
                 // Inserting values into tasks table
-                long id = db.insertWithOnConflict(MovieEntry.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
+                long id = db.insertWithOnConflict(MovieEntry.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_IGNORE);
                 if ( id > 0 ) {
                     returnUri = ContentUris.withAppendedId(MovieEntry.CONTENT_URI, id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
+            // else {
+//                    throw new android.database.SQLException("Failed to insert row into " + uri);
+//                }
                 break;
             // COMPLETED (4) Set the value for the returnedUri and write the default case for unknown URI's
             // Default case throws an UnsupportedOperationException
@@ -123,9 +124,15 @@ public class MoviesContentProvider extends ContentProvider {
                 String id = uri.getPathSegments().get(1);
                 // Use selections/selectionArgs to filter for this ID
 //                String mSelection="_id=?";
-                String mSelection="is_favorite=?";
-                String[] mSelectionArgs=new String[]{id};
-                retCursor =db.query(MovieEntry.TABLE_NAME,projection,mSelection,mSelectionArgs,null,null,sortOrder);
+                if(selection==null) {
+                    String mSelection = "is_favorite=?";
+                    String[] mSelectionArgs = new String[]{id};
+                    retCursor = db.query(MovieEntry.TABLE_NAME, projection, mSelection, mSelectionArgs, null, null, sortOrder);
+                }else{//get specific movie
+                    String[] mSelectionArgs = new String[]{id};
+                    retCursor = db.query(MovieEntry.TABLE_NAME, projection, selection, mSelectionArgs, null, null, sortOrder);
+
+                }
                 break;
             // Default exception
             default:
